@@ -4,9 +4,11 @@ public class PlayerMovement : MonoBehaviour {
 
     public Rigidbody playerBody;
     public float forwardForce = 1000f;
-    public float sideForce = 1000f;
+    public float sideForce = 750f;
+    public float upForce = 250f;
     public bool moveLeft = false;
     public bool moveRight = false;
+    public bool jump = false;
 
     void Update()
     {
@@ -15,14 +17,20 @@ public class PlayerMovement : MonoBehaviour {
             moveLeft = true;
         }
 
-        if (Input.GetKey("d"))
+        if(Input.GetKey("d"))
         {
             moveRight = true;
+        }
+
+        if(Input.GetKeyDown("space"))
+        {
+            Debug.Log("i jumped");
+            jump = true;
         }
     }
 
     // Updating Physics
-    void FixedUpdate () {
+    void FixedUpdate() {
 
         playerBody.AddForce(0, 0, forwardForce * Time.deltaTime);
 
@@ -32,10 +40,16 @@ public class PlayerMovement : MonoBehaviour {
             moveLeft = false;
         }
 
-        if (moveRight == true)
+        if(moveRight == true)
         {
             playerBody.AddForce(sideForce * Time.deltaTime, 0, 0);
             moveRight = false;
+        }
+
+        if(jump == true)
+        {
+            playerBody.AddForce(transform.up * upForce);
+            jump = false;
         }
     }
 }

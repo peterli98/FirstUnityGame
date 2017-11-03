@@ -3,9 +3,9 @@
 public class PlayerMovement : MonoBehaviour {
 
     public Rigidbody playerBody;
-    public float forwardForce = 1000f;
-    public float sideForce = 750f;
-    public float upForce = 250f;
+    public float forwardForce = 2000f;
+    public float sideForce = 500f;
+    public float upForce = 500f;
     public bool moveLeft = false;
     public bool moveRight = false;
     public bool jump = false;
@@ -36,13 +36,13 @@ public class PlayerMovement : MonoBehaviour {
 
         if(moveLeft == true)
         {
-            playerBody.AddForce(-sideForce * Time.deltaTime, 0, 0);
+			playerBody.AddForce(-sideForce * Time.deltaTime, 0, 0, ForceMode.VelocityChange);
             moveLeft = false;
         }
 
         if(moveRight == true)
         {
-            playerBody.AddForce(sideForce * Time.deltaTime, 0, 0);
+			playerBody.AddForce(sideForce * Time.deltaTime, 0, 0, ForceMode.VelocityChange);
             moveRight = false;
         }
 
@@ -51,5 +51,10 @@ public class PlayerMovement : MonoBehaviour {
             playerBody.AddForce(transform.up * upForce);
             jump = false;
         }
+
+		if (playerBody.position.y < -1) 
+		{
+			FindObjectOfType<GameManager> ().EndGame ();
+		}
     }
 }
